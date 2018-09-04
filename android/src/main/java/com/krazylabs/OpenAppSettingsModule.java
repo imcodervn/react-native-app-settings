@@ -31,4 +31,17 @@ public class OpenAppSettingsModule extends ReactContextBaseJavaModule {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         reactContext.startActivity(intent);
     }
+        @ReactMethod
+    public void openNotificationSetting() {
+        Intent settingsIntent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            settingsIntent.putExtra(Settings.EXTRA_APP_PACKAGE, reactContext.getPackageName());
+        } else {
+            settingsIntent.putExtra("app_package", reactContext.getPackageName())
+                    .putExtra("app_uid", reactContext.getApplicationInfo().uid);
+        }
+        reactContext.startActivity(settingsIntent);
+
+    }
 }
